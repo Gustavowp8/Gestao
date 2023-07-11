@@ -83,5 +83,44 @@ namespace Gestao.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Excluir(int? id)
+        {
+            if (!id.HasValue)
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Categoria não informada!", TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
+            }
+
+            var sala = await _context.Salas.FindAsync(id);
+            if (sala == null)
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Categoria não encontrada!", TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(sala);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Excluir(int id)
+        {
+            var categoria = await _context.Salas.FindAsync(id);
+
+            if (categoria != null)
+            {
+                _context.Salas.Remove(categoria);
+                if (await _context.SaveChangesAsync() > 0)
+                    TempData["mensagem"] = MensagemModel.Serializar("Sala excluida com sucesso!");
+                else
+                    TempData["mensagem"] = MensagemModel.Serializar("ERRO! Não foi possivel excluir a Sala.", TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Sala não encontrada!");
+                return RedirectToAction(nameof(Index));
+            }
+
+        }
     }
 }
