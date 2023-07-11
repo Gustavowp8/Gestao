@@ -1,0 +1,49 @@
+﻿@model IEnumerable<SalasModel>
+
+@{
+    ViewBag.Subtitulo = "Lista de Salas";
+}
+
+<header class="d-flex justify-content-between align-items-center">
+
+    <div>
+        <h1 class="text-primary">@ViewBag.Subtitulo</h1>
+    </div>
+    <div>
+        <a asp-action="Cadastrar" class="btn btn-primary">Adicionar Salas</a>
+    </div>
+
+</header>
+<hr />
+
+<partial name="_Mensagem"></partial>
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-striped tabela-categorias">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var salas in Model)
+            {
+                <tr>
+                    <td>@salas.Nome</td>
+                    <td>
+                        <a asp-action="Cadastrar" asp-route-id="@salas.IdSala" class="btn btn-sm btn-secondary">Alterar</a>
+                        <a asp-action="Excluir" asp-route-id="@salas.IdSala" class="btn btn-sm btn-danger">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+else
+{
+    <p>Não há nenhuma categoria cadastrada.</p>
+}
