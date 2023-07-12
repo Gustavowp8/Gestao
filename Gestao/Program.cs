@@ -1,4 +1,5 @@
 using Gestao.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ var connection = builder.Configuration.GetConnectionString("GestaoContext");
 
 builder.Services.AddDbContext<GestaoContext>(options =>
     options.UseMySql(connection, Microsoft.EntityFrameworkCore.ServerVersion.Parse("3.0.38-mysql")));
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<GestaoContext>();
 
 var app = builder.Build();
 
@@ -26,6 +29,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gestao.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gestao.Controllers
 {
+    [Authorize]
     public class SalaController : Controller
     {
         private readonly GestaoContext _context;
